@@ -275,6 +275,7 @@ if(document.URL.indexOf('http://news.ycombinator.com/item?id=') == 0) {
                     if(parts.innerHTML != '') {
                         //story link 
                         stories[storyNo] = {};
+                        parts.find('a').attr('target', '_blank');
                         stories[storyNo].story = '<tr>' + parts.innerHTML + '</tr>';
                         rowCount++;
                     }
