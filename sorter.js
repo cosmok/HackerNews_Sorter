@@ -181,9 +181,20 @@ function compareByPoints(a,b) {
         return b.points - a.points;
     }
 }
+
+function compareByHybrid(a,b) {
+    sortDir = $.cookie('k7_sort_hybrid_direction');
+    if(sortDir === 'asc') {
+        return a.hybrid - b.hybrid;
+    } else {
+        return b.hybrid - a.hybrid;
+    }
+}
+
 function sortByPoints()
 {
     $.cookie('k7_sort_comments_direction', null);
+    $.cookie('k7_sort_hybrid_direction', null);
     $.cookie('k7_sort_by', 'points');
     if($.cookie('k7_sort_points_direction') == 'asc') {
         $.cookie('k7_sort_points_direction', 'desc');
@@ -196,10 +207,12 @@ function sortByPoints()
     writeStories(sortedByPoints);
     $('#k7_sort_by_points').css('color', 'red');
     $('#k7_sort_by_comments').css('color', 'black');
+    $('#k7_sort_by_hybrid').css('color', 'black');
 }
 function sortByComments()
 {
     $.cookie('k7_sort_points_direction', null);
+    $.cookie('k7_sort_hybrid_direction', null);
     $.cookie('k7_sort_by', 'comments');
     if($.cookie('k7_sort_comments_direction') == 'asc') {
         $.cookie('k7_sort_comments_direction', 'desc');
@@ -213,7 +226,28 @@ function sortByComments()
     writeStories(sortedByComments);
     $('#k7_sort_by_comments').css('color', 'red');
     $('#k7_sort_by_points').css('color', 'black');
+    $('#k7_sort_by_hybrid').css('color', 'black');
 }
+function sortByHybrid()
+{
+    $.cookie('k7_sort_points_direction', null);
+    $.cookie('k7_sort_comments_direction', null);
+    $.cookie('k7_sort_by', 'hybrid');
+    if($.cookie('k7_sort_hybrid_direction') == 'asc') {
+        $.cookie('k7_sort_hybrid_direction', 'desc');
+    } else if($.cookie('k7_sort_hybrid_direction') == 'desc') {
+        $.cookie('k7_sort_hybrid_direction', 'asc');
+    } else {
+        $.cookie('k7_sort_hybrid_direction', 'desc');
+    }
+
+    sortedByHybrid = stories.sort(compareByHybrid);
+    writeStories(sortedByHybrid);
+    $('#k7_sort_by_comments').css('color', 'black');
+    $('#k7_sort_by_points').css('color', 'black');
+    $('#k7_sort_by_hybrid').css('color', 'red');
+}
+
 function writeStories(stories)
 {
     if(!more) {
@@ -252,6 +286,11 @@ if(document.URL.indexOf('http://news.ycombinator.com/item?id=') == 0) {
                         stories[storyNo].points = parseInt($(parts).find('td.subtext span:first-child').html().replace(/points|point/, ''));
                         comments = $(parts).find('td.subtext a:last-child').html().replace(/comments|comment/, '').replace('discuss', 0);
                         stories[storyNo].comments = parseInt(comments);
+                        if(comments + points > 0) {
+                            stories[storyNo].hybrid = (comments * 0.75 + points * .25) / (comments + points);
+                        } else {
+                            stories[storyNo].hybrid = 0;
+                        }
                     }
                     rowCount++;
                 } else {
@@ -261,10 +300,12 @@ if(document.URL.indexOf('http://news.ycombinator.com/item?id=') == 0) {
             });
         } else if (i == 4) {
             if(!($('#k7_sort_by').html())) {
-                $('body').prepend('<div id="k7_sort_by" style="width:92%;text-align:right"><a href="#" id="k7_sort_by_comments" onclick="sortByComments();">Comments</a> | <a href="#"  id="k7_sort_by_points" onclick="sortByPoints();">Points</a></div>');
+                $('body').prepend('<div id="k7_sort_by" style="width:92%;text-align:right"><a href="#" id="k7_sort_by_comments" onclick="sortByComments();">Comments</a> | <a href="#"  id="k7_sort_by_points" onclick="sortByPoints();">Points</a> | | <a href="#"  id="k7_sort_by_hybrid" onclick="sortByHybrid();">Hybrid</a></div>');
             }
-            if($.cookie('k7_sort_by') == 'comments') {
+            if ($.cookie('k7_sort_by') == 'comments') {
                 sortByComments();
+            } else if ($.cookie('k7_sort_by') == 'hybrid') {
+                sortByHybrid();
             } else {
                 sortByPoints();
             }
