@@ -286,8 +286,8 @@ if(document.URL.indexOf('http://news.ycombinator.com/item?id=') == 0) {
                         stories[storyNo].points = parseInt($(parts).find('td.subtext span:first-child').html().replace(/points|point/, ''));
                         comments = $(parts).find('td.subtext a:last-child').html().replace(/comments|comment/, '').replace('discuss', 0);
                         stories[storyNo].comments = parseInt(comments);
-                        if(comments + points > 0) {
-                            stories[storyNo].hybrid = (comments * 0.75 + points * .25) / (comments + points);
+                        if(stories[storyNo].comments + stories[storyNo].points > 0) {
+                            stories[storyNo].hybrid = (stories[storyNo].comments * 0.75 + stories[storyNo].points * .25) / (stories[storyNo].comments + stories[storyNo].points);
                         } else {
                             stories[storyNo].hybrid = 0;
                         }
