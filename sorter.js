@@ -293,6 +293,7 @@ if(document.URL.indexOf('http://news.ycombinator.com/item?id=') == 0) {
                     }
                 } else if(rowCount == 1) {
                     //comment, points
+                    $(parts).find('a').attr('target', '_blank');
                     stories[storyNo].story += '<tr>' + parts.innerHTML + '</tr>';
                     //make sure we are grabbing the line with comments count and points
                     if($(parts).find('td.subtext span:first-child').html()) {
@@ -306,7 +307,6 @@ if(document.URL.indexOf('http://news.ycombinator.com/item?id=') == 0) {
                         }
                     }
                     rowCount++;
-                    $(parts).find('a').attr('target', '_blank');
                 } else {
                     stories[storyNo].story += '<tr style="height:5px" />';
                     rowCount = 0;
