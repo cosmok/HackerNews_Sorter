@@ -196,7 +196,11 @@ function sortByPoints()
     $.cookie('k7_sort_comments_direction', null);
     $.cookie('k7_sort_hybrid_direction', null);
     $.cookie('k7_sort_by', 'points');
-    if($.cookie('k7_sort_points_direction') == 'asc') {
+    if($.cookie('k7_sort_points_direction') && init) {
+        //if the bookmarklet is clicked for the first time and the above
+        //cookie is set, I do not expect to have the sorting direction toggled
+        init = false;
+    } else if($.cookie('k7_sort_points_direction') == 'asc') {
         $.cookie('k7_sort_points_direction', 'desc');
     } else if($.cookie('k7_sort_points_direction') == 'desc') {
         $.cookie('k7_sort_points_direction', 'asc');
@@ -214,7 +218,11 @@ function sortByComments()
     $.cookie('k7_sort_points_direction', null);
     $.cookie('k7_sort_hybrid_direction', null);
     $.cookie('k7_sort_by', 'comments');
-    if($.cookie('k7_sort_comments_direction') == 'asc') {
+    if($.cookie('k7_sort_comments_direction') && init) {
+        //if the bookmarklet is clicked for the first time and the above
+        //cookie is set, I do not expect to have the sorting direction toggled
+        init = false;
+    } else if($.cookie('k7_sort_comments_direction') == 'asc') {
         $.cookie('k7_sort_comments_direction', 'desc');
     } else if($.cookie('k7_sort_comments_direction') == 'desc') {
         $.cookie('k7_sort_comments_direction', 'asc');
@@ -233,7 +241,11 @@ function sortByHybrid()
     $.cookie('k7_sort_points_direction', null);
     $.cookie('k7_sort_comments_direction', null);
     $.cookie('k7_sort_by', 'hybrid');
-    if($.cookie('k7_sort_hybrid_direction') == 'asc') {
+    if($.cookie('k7_sort_hybrid_direction') && init) {
+        //if the bookmarklet is clicked for the first time and the above
+        //cookie is set, I do not expect to have the sorting direction toggled
+        init = false;
+    } else if($.cookie('k7_sort_hybrid_direction') == 'asc') {
         $.cookie('k7_sort_hybrid_direction', 'desc');
     } else if($.cookie('k7_sort_hybrid_direction') == 'desc') {
         $.cookie('k7_sort_hybrid_direction', 'asc');
@@ -247,7 +259,7 @@ function sortByHybrid()
     $('#k7_sort_by_points').css('color', 'black');
     $('#k7_sort_by_hybrid').css('color', 'red');
 }
-
+var init = true;
 function writeStories(stories)
 {
     if(!more) {
