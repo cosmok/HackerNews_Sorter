@@ -306,6 +306,7 @@ if(document.URL.indexOf('http://news.ycombinator.com/item?id=') == 0) {
                         }
                     }
                     rowCount++;
+                    $(parts).find('a').attr('target', '_blank');
                 } else {
                     stories[storyNo].story += '<tr style="height:5px" />';
                     rowCount = 0;
